@@ -11,7 +11,7 @@ ENV PATH $SPARK_HOME/bin:$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH
 ENV PYTHONPATH /opt/aws-glue-libs/:$SPARK_HOME/python/:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 
 RUN apk add --update curl git bash openssl openssl-dev bzip2-dev build-base \
-                     zlib-dev readline-dev sqlite-dev && \
+                     zlib-dev readline-dev sqlite-dev libc6-compat && \
     rm -f /var/cache/apk/*
 
 WORKDIR /opt

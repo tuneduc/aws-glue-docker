@@ -22,14 +22,10 @@ RUN git clone --depth 1 https://github.com/pyenv/pyenv.git $PYENV_ROOT && \
 
 RUN wget $SPARK_URL && tar -xzf *.tgz && rm *.tgz
 
-RUN git clone https://github.com/awslabs/aws-glue-libs $GLUE_HOME && \
-    # Checking out current head of Glue 1.0 branch
-    cd $GLUE_HOME && git checkout 4f6ac89
+RUN git clone https://github.com/awslabs/aws-glue-libs $GLUE_HOME
 
-RUN mvn -f $GLUE_HOME/pom.xml -DoutputDirectory=$GLUE_HOME/jars dependency:copy-dependencies
+WORKDIR $GLUE_HOME
 
-# Bodge (https://github.com/awslabs/aws-glue-libs/issues/25)
-RUN rm $GLUE_HOME/jars/netty-* $GLUE_HOME/jars/javax.servlet-3.* && \
-    echo -n "spark.driver.extraClassPath $GLUE_HOME/jars/*" > $SPARK_HOME/conf/spark-defaults.conf
+RUN mvn -f pom.xml -DoutputDirectory=jars dependency:copy-dependencies
 
 WORKDIR /root
